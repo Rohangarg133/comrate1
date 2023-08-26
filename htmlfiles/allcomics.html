@@ -1,0 +1,393 @@
+<style>
+  .horizontal-row {
+    overflow-x: scroll;
+    width: 96%;
+    /* float: center; */
+    /* padding-left: 20px;
+      padding-right: 20px; */
+    /* max-height: 500px; */
+
+    white-space: nowrap;
+  }
+
+  .horizontal-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollable-row {
+    overflow-x: scroll;
+    width: 100%;
+    /* max-height: 500px; */
+
+    white-space: nowrap;
+  }
+
+  .sectiontitle {
+    cursor: pointer;
+    margin-left: 1em;
+    color: aliceblue;
+    display: inline-block;
+  }
+
+  .sectiontitle:hover {
+    background-color: rgb(255, 255, 255);
+    border-radius: 4px;
+    color: rgb(0, 0, 0);
+    padding: 2px;
+  }
+
+  .selectfilter {
+    border-radius: 0.3em;
+    color: white;
+    border: 1px solid white;
+    background-color: rgba(94, 94, 94, 0.466);
+  }
+
+  .selectfilter:hover {
+    background-color: #292929;
+  }
+
+  option {
+    background-color: rgb(92, 92, 92);
+  }
+
+  #all-comic-card-container:hover .next {
+    display: block;
+  }
+
+  #all-comic-card-container:hover .prev {
+    display: block;
+  }
+
+  .userrating:hover {
+    background-color: rgba(0, 0, 0, 0.37);
+    border-radius: 5px;
+  }
+
+
+  /* from popular comics------------------------------------------------------------------------------------- */
+      /* ---------------my card css-------------------------------------------------------------------------- */
+      .mycard {
+        font-family: 'comic Sans MS', sans-serif;
+        text-decoration: none;
+        --bg-filter-opacity: 0;
+        background-image: linear-gradient(rgba(0, 0, 0, var(--bg-filter-opacity)), rgba(0, 0, 0, var(--bg-filter-opacity))), var(--bg-img);
+        filter: brightness(110%);
+        height: 11em;
+        width: 7em;
+        font-size: 1.5em;
+        color: white;
+        border-radius: 0.5em;
+        padding: 0em;
+        margin: 0.3em;
+        display: inline-block;
+        /* align-items:normal; */
+        /* justify-items: normal; */
+        /* background-size: auto 12em; */
+        /* background-size: 270px 340px; */
+        background-size: 125%;
+        background-position: top;
+        background-repeat: no-repeat;
+        background-color: rgb(22, 22, 22);
+        /* box-shadow: 0 0 5em -1em black; */
+        /* transition: all, var(--transition-time); */
+        opacity: 1;
+        position: relative;
+        overflow: hidden;
+        /* outline: 1px solid rgba(245, 245, 245, 0.644); */
+        outline-offset: -6px;
+        /* border: 3px double #ffffff; */
+        /* border-image: linear-gradient(#fc0000, #ffee02) 30; */
+        /* transition: 1s; */
+    }
+
+    .mycard img {
+        max-width: 525px;
+    }
+
+    @media screen and (max-width: 760px) {
+        .mycard {
+            width: 8em;
+            font-size: 1em;
+            background-size: auto 12em;
+        }
+
+        #trending {
+            padding-left: 0em;
+            padding-right: 0em;
+        }
+
+        .playbutton {
+            height: 25px;
+            width: 75px;
+        }
+
+        #trending {
+            padding-left: 2%;
+            padding-right: 2%
+        }
+
+        .movie_card{
+           background-size: 90%;
+        }
+
+        #tales_modal .modal-body #tales_yt_parent iframe{
+            padding-left: 0;
+            padding-right: 0;
+            width: 100%;
+
+        }
+    }
+
+    .mycard p {
+        margin: 0em;
+        margin-top: 10.7em;
+        font-size: 0.8em;
+        font-weight: 500;
+        line-height: 1.2em;
+        background: rgba(0, 0, 0, .6);
+    }
+
+    .mycard:hover {
+        box-shadow: 0 0 5px rgb(224, 240, 245);
+        /* background-size: 140%;; */
+        /* color: rgb(230, 230, 33); */
+        /* background-color: rgb(27, 27, 27); */
+        /* outline: 1px solid yellow; */
+    }
+
+    .mycard a {
+        cursor: pointer;
+    }
+
+    .ratecard {
+        cursor: pointer;
+    }
+
+    /* .mycard p {
+        font-size: 0.65em;
+        font-family: 'Open Sans';
+        color: white;
+        margin-top: 0.4em;
+        line-height: 1.3em;
+    } */
+
+    .mycard .tags {
+        display: flex;
+        color: rgb(245, 232, 232);
+    }
+
+    .mycard .tags .tag {
+        font-size: 0.75em;
+        background: rgba(3, 3, 3, 0.5);
+        border-radius: 0.3rem;
+        padding: 0 0.5em;
+        margin-right: 0.5em;
+        line-height: 1.5em;
+        transition: all, var(--transition-time);
+    }
+
+    .chip {
+        /* display: inline-block; */
+        max-width: fit-content;
+        margin: 3px;
+        /* padding: 10px; */
+        /* height: 50px; */
+        font-size: 1.1em;
+        font-weight: 300;
+        color: whitesmoke;
+        /* line-height: 50px; */
+        border-radius: 25px;
+        border: 2px dotted white;
+        /* background-color: #f1dd24; */
+    }
+
+    .chip:hover {
+        border: 2px solid white;
+        font-size: 1.2em;
+    }
+
+    .family-filter-icon {
+        position: absolute;
+        size: 1em;
+        left: 7px;
+        top: 7px;
+    }
+
+    #comic-card-container:hover .next {
+        display: block;
+    }
+
+    #comic-card-container:hover .prev {
+        display: block;
+    }
+</style>
+
+<!-- position: absolute; right: 15px; -->
+<br>
+<h3 class="sectiontitle" onclick="changehash('#comics')">Comics</h3>
+<span style="float: right; padding-right: 10px;">
+  <select class="selectfilter" id="all_comics_cards_countryfilter" onchange="filtereddata('all_comics_cards')">
+    <option value=1 selected>Country</option>
+    <option value=1>All</option>
+    <option value=2>India</option>
+    <option value=3>USA</option>
+    <option value=4>UK</option>
+  </select>
+
+
+
+  <select class="selectfilter" id="all_comics_cards_ratingfilter" onchange="filtereddata('all_comics_cards')">
+    <option value=1 selected>Rating</option>
+    <option value=8>>8</option>
+    <option value=7>>7</option>
+    <option value=6>>6</option>
+    <option value=5>>5</option>
+  </select>
+</span>
+
+<center>
+  <div class="horizontal-row" id="all-comic-card-container">
+
+
+  </div>
+
+</center>
+
+<script>
+  //---this gets data from database via server and stores it in global variable comicdata---------
+  var currentpos = 0;
+  // assets/comic/`+ comicdata[rows[iall]]['imagesource'] + `.png
+  function all_comics_cards(id = "all-comic-card-container") {
+    var iall = currentpos;
+    if (currentpos == 0) { document.getElementById("all-comic-card-container").innerHTML = get_arrows('all-comic-card-container'); currentpos = 10 }
+    else currentpos += 30;
+    for (; iall < currentpos && iall < rows.length; iall++)
+      document.getElementById(id).innerHTML += `
+          <div class="mycard" style="--bg-img: url('https://i.imgur.com/`+ comicdata[rows[iall]]['imgur'] + `.webp'); position:relative;" loading="lazy">
+          <a onclick="changehash('#comic/`+ rows[iall] + `/` + changespacetodash(comicdata[rows[iall]]['comicname']) + `');" style="position: absolute; top: 0; left: 0; width: 100%; height: 90%; z-index: 1;"></a>
+              <img class="family-filter-icon"  src="`+ eval('family' + comicdata[rows[iall]]['comiccolor']) + `" width="22px">                
+              <p> ` + textellipsis(comicdata[rows[iall]]['comicname'], 17) + ` </p>
+              <div style="background:rgba(0, 0, 0, .6);">
+                <img width="25" height="25" src="https://img.icons8.com/sf-black-filled/25/FFFFFF/star.png" alt="star"/>  
+                  <span style="font-size: medium;">` + comicdata[rows[iall]]['comicrating'] + `</span> 
+                  &nbsp; &nbsp; &nbsp;  
+                  <span class="userrating" style="font-size: medium;" onclick="coloremojis('` + comicdata[rows[iall]]['comicid'] + `')" data-bs-toggle="modal" data-bs-target="#myModal"> 
+                    <img width="25" height="25" src="https://img.icons8.com/sf-regular/25/FFFFFF/star.png" alt="star"/>
+                  </span>
+              </div> 
+          </div>`;
+  }
+
+  var all_comics_pageno = 0;
+  function all_comics_nav_page() {
+    all_comics_pageno < 0 ? all_comics_pageno = 0 : all_comics_pageno > (rows.length / 40 + 1) ? all_comics_pageno = (rows.length / 40 + 1) : null;
+    all_comics_pageno = parseInt(all_comics_pageno)
+    document.getElementById("nav-modal-body").innerHTML = ''
+    for (var i = 40 * all_comics_pageno; i < 40 * (all_comics_pageno + 1) && i < rows.length; i++) {
+      document.getElementById("nav-modal-body").innerHTML +=
+        `<div class="mycard" style="--bg-img: url('https://i.imgur.com/` + comicdata[rows[i]]['imgur'] + `.webp'); position:relative;">
+              <a onclick="changehash('#comic/` + rows[i] + `/` + changespacetodash(comicdata[rows[i]]['comicname']) + `')" style="position: absolute; top: 0; left: 0; width: 100%; height: 90%; z-index: 1;"></a>
+                  <img class="family-filter-icon"  src="`+ eval('family' + comicdata[rows[i]]['comiccolor']) + `">                
+                  <p onclick="changehash('#comic/` + rows[i] + `/` + changespacetodash(comicdata[rows[i]]['comicname']) + `')"> ` + textellipsis(comicdata[rows[i]]['comicname'], 17) + ` </p>
+                  <div style="background:rgba(0, 0, 0, .6);">
+                    <img width="20" height="20" src="https://img.icons8.com/sf-black-filled/20/FFFFFF/star.png" alt="star"/> 
+                      <span style="font-size: medium;">` + comicdata[rows[i]]['comicrating'] + `</span> 
+                      &nbsp; &nbsp; &nbsp;  
+                      <span class="userrating" style="font-size: medium;" onclick="coloremojis('` + comicdata[rows[i]]['comicid'] + `')" data-bs-toggle="modal" data-bs-target="#myModal"> 
+                        <img width="25" height="25" src="https://img.icons8.com/sf-regular/25/FFFFFF/star.png" alt="star"/> ` + comicdata[rows[i]]['userrating'] +
+                      `</span> ` + `</div> 
+          </div>`;
+    }
+  }
+
+//------------------------modal for each comic------------------------------------------------
+function get_comics_modaldata(rowno) {
+    $('#comicmodal').modal('show');
+    if (comicdata[rowno]['comiclanguage'] == undefined || comicdata[rowno]['comiclanguage'] == "") { fetch_all_data('comics', rowno); return; }
+    fetch_yt_videos(comicdata[rowno]['comicyt']);
+    fetch_comments(comicdata[rowno]['comicid']);
+    document.getElementById("comicimage").scrollIntoView({ behavior: 'smooth' });
+    document.getElementById("ratingsystem").innerHTML =
+        `<img width="25" height="25" src="https://img.icons8.com/sf-black-filled/25/FFFFFF/star.png" alt="star"/> ` + comicdata[rowno]['comicrating'] +
+        `&nbsp; &nbsp; 
+        <img width="25" height="25" src="https://img.icons8.com/sf-regular/25/FFFFFF/star.png" alt="star" onclick="coloremojis('` + comicdata[rowno]['comicid'] + `', 'ratingsystem')"/> `
+
+    document.getElementById('family-filter1').src = eval('family' + comicdata[rowno]['comiccolor']);
+    document.getElementById('family-filter1').setAttribute("title", comicdata[rowno]['comiccolor'] == 0 ? 'Abusive' : comicdata[rowno]['comiccolor'] == 1 ? 'Clean comedy' : '18+');
+    document.getElementById('comicmodaltitle').innerHTML = comicdata[rowno]['comicname'];
+    document.getElementById("comicimage").src = 'https://i.imgur.com/' + comicdata[rowno]['imgur'] + '.webp';
+    document.getElementById("comicdata").innerHTML = `<p>
+        <img src="assets/icons/dob-25.webp" wdith="25px" height="25px"> ` + comicdata[rowno]['comicdob']
+        + '<br><img src="assets/icons/gender-25.webp" wdith="25px" height="25px">  ' + comicdata[rowno]['comicgender']
+        + `<br><img src="assets/icons/globe-25.webp" wdith="25px" height="25px">  ` + comicdata[rowno]['comiccountry']
+        + `<br><img src="assets/icons/language-25.webp" wdith="25px" height="25px"> ` + comicdata[rowno]['comiclanguage'] + ` </p>`;
+    document.getElementById("comicdescription").innerHTML = comicdata[rowno]['comicdescription'];
+    document.getElementById("instagrammodal").href = comicdata[rowno]['comicinsta'];
+    document.getElementById("youtubemodal").href = comicdata[rowno]['comicyt'];
+    document.getElementById("facebookmodal").href = comicdata[rowno]['comicfb'];
+    let genrearray = comicdata[rowno]['comicgenre'].split(",");
+    document.getElementById("comicgenre").innerHTML = "";
+    for (var j = 0; j < genrearray.length; j++) {
+        document.getElementById("comicgenre").innerHTML += `<span class="chip">` + genrearray[j] + `</span>`;
+    }
+    document.getElementById('commentsubmitbutton').setAttribute("onclick", `submitcomment(` + comicdata[rowno]['comicid'] + `)`);
+}
+
+function get_comics_modaldata_ytvideos() {
+    //for yt videos in modal
+    document.getElementById("modalytvideos").innerHTML = "";
+    for (var yt = 0; yt < 3; yt++) {
+        document.getElementById("modalytvideos").innerHTML += `<div class="row" style="margin-bottom:1em">
+                 <iframe  type="text/html" 
+                   allow="clipboard-write; encrypted-media; gyroscope; picture-in-picture; autoplay"
+                   style="padding-left: 0em; padding-right: 0em; border-radius: 20px;  aspect-ratio: 16 / 9;"
+                   src="https://www.youtube.com/embed/`+ videoslist[yt] + `" frameborder="0" allowfullscreen>
+                 </iframe>
+               </div>`;
+    }
+}
+
+function fill_comments() {
+    document.getElementById("commentsection").innerHTML = ""
+    for (var j = 0; j < comments.length; j++) {
+        document.getElementById("commentsection").innerHTML += `<img src='assets/icons/avatar` + Math.floor(Math.random() * 4) + `.webp' alt='A'> <img> &nbsp; <span style="color:white;">` + comments[j]['comments'] + "</span><br>";
+    }
+}
+
+function submitcomment(comicid) {
+    var fieldvalue = $.trim($('#comment').val());
+    if (!fieldvalue || fieldvalue == "placeholdertext") {
+        $('#comment').attr("placeholder", "Enter some text");
+        console.log('failed to add comment')
+    } else {
+        $.ajax({
+            type: "GET",  //type of method
+            url: "server/comments.php",  //your page
+            data: { comicid: comicid, comment: fieldvalue },// passing the values
+            success: function (res) {
+                // console.log(res)
+                $('#comment').val('');
+                $('#comment').attr("placeholder", "Enter comment");
+                document.getElementById("commentsection").innerHTML += "<img src='assets/icons/avatar" + Math.floor(Math.random() * 4) + ".webp' alt='A'> <img>" + fieldvalue + "<br>";
+            }
+        });
+    }
+}
+
+let ratedcomics = new Array() //contains list of comic ids which this user has already given rating
+var comicidforrating, rating;
+function submitrating(id = 'ratebutton', comicrowno = 0) {
+    if (id != 'ratingsystem') {
+        document.getElementById('r' + idtracker).innerHTML = ""
+        document.getElementById('r' + idtracker).innerHTML += `<img class="ratecard" src="assets/icons/star6-20.webp" width="20px" height="20px"> ` + rating;
+        $("#myModal").modal('hide');
+    }
+    else {
+        document.getElementById("ratingsystem").innerHTML =
+            `<img src="assets/icons/star4-20.webp" style="color: white;"> ` + comicdata[comicrowno]['comicrating'] +
+            `&nbsp; &nbsp; 
+        <img src="assets/icons/star-dotted-20.webp" onclick="coloremojis('` + comicdata[comicrowno]['comicid'] + `', 'ratingsystem')"> ` + rating
+    }
+}
+</script>

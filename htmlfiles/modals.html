@@ -1,0 +1,494 @@
+<style>
+  ::placeholder {
+    color: rgb(180, 179, 179);
+  }
+
+  /* css for pagination ++++++++++++++++++++++++++++ */
+
+  .page-item {
+    background-color: grey;
+  }
+
+  .pagination>li>a {
+    background-color: rgb(37, 37, 37);
+    color: #ffffff;
+  }
+
+  .pagination>li>a:focus,
+  .pagination>li>a:hover,
+  .pagination>li>span:focus,
+  .pagination>li>span:hover {
+    color: #5a5a5a;
+    background-color: #eee;
+    border-color: #ddd;
+  }
+
+  .pagination>.active>a {
+    color: rgb(114, 114, 114);
+    background-color: #5A4181 !Important;
+    border: solid 1px #5A4181 !Important;
+  }
+
+  .pagination>.active>a:hover {
+    background-color: #5A4181 !Important;
+    border: solid 1px #5A4181;
+  }
+
+  /* +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+  /* CSS for searchBar ----------------------------- */
+
+  .form-control {
+    background-color: black;
+    border: 1px grey solid
+  }
+
+  .form-control::placeholder {
+    color: rgb(197, 196, 196);
+  }
+
+  /* ----------------------------------------------- */
+
+  /* .commentinput {
+    border: none;
+    border-bottom: 1px white solid;
+    color: white;
+    background-color: transparent;
+    width: 95%;
+  } */
+
+  .navmodal1 {
+    z-index: 9998;
+  }
+
+  .ratepopup {
+    z-index: 9999;
+  }
+
+  #comment-form {
+    display: flex;
+    padding: 0;
+    margin-top: 16px;
+  }
+
+  #comment {
+    flex: 1;
+    /* margin-right: 16px; */
+    margin: 8px;
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+    /* border-radius: 4px; */
+    font-size: 16px;
+    color: white;
+  }
+
+  #comment:focus {
+    outline: none;
+    border: 0;
+    border-bottom: 2px solid white;
+  }
+
+  #commentsubmitbutton {
+    background-color: rgb(104, 103, 103);
+    color: #fff;
+    border: none;
+    height: 35px;
+    border-radius: 25px;
+    padding: 4px 8px;
+    /* 
+  font-size: 16px; */
+    cursor: pointer;
+  }
+
+  #commentsubmitbutton:hover {
+    background-color: rgb(54, 54, 54);
+  }
+
+  .custom_fade {
+    opacity: 5;
+  }
+</style>
+
+<!-- ------------- ---------------- ---NAV modal for ALL COMICS page-------------------------- ---  -->
+<div class="modal navmodal1 modal-open fade" id="navmodal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content" style="background-color: rgb(37, 37, 37);">
+      <div class="modal-header">
+
+        <div class="col col-lg-2 col-md-2 col-sm-3 d-none d-sm-block">
+          <h5 class="modal-title" id="nav-modal-title" style="color:wheat">All Comics</h5>
+        </div>
+        <div class="col col-lg-6 col-md-7 col-sm-7">
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search Comics" aria-label="Search"
+              id="datasearch-nav" onkeyup="getsuggestions(event, 'search-list-nav','datasearch-nav')"
+              onclick="getsuggestions(event, 'search-list-nav','datasearch-nav')">
+            <div class="col col-lg-6 col-md-7 col-sm-8 col-12 vertical-list" id="search-list-nav"
+              style="position: absolute; z-index: 2; max-width: 100%; top: 50px; ">
+            </div>
+          </form>
+        </div>
+        <button type="button" class="btn-close btn-close-white" onclick="press_back()"></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <center>
+            <select class="selectfilter" id="all_comics_nav_page_countryfilter"
+              onchange="filtereddata('all_comics_nav_page')">
+              <option value="" disabled selected>Country</option>
+              <option value=1>All</option>
+              <option value=2>India</option>
+              <option value=3>USA</option>
+              <option value=4>UK</option>
+            </select>
+
+            <select class="selectfilter" id="all_comics_nav_page_genderfilter"
+              onchange="filtereddata('all_comics_nav_page')">
+              <option value="" disabled selected>Gender</option>
+              <option value=1>All</option>
+              <option value=2>Male</option>
+              <option value=3>Female</option>
+            </select>
+
+            <select class="selectfilter" id="all_comics_nav_page_ratingfilter"
+              onchange="filtereddata('all_comics_nav_page')">
+              <option value="" disabled selected>Rating</option>
+              <option value=9>>9</option>
+              <option value=8>>8</option>
+            </select>
+            <button class="selectfilter" onclick="all_comics_pageno--; all_comics_nav_page();"
+              style="height: 1.6em;">&#10094;</button>
+            <button class="selectfilter" onclick="all_comics_pageno++; all_comics_nav_page();"
+              style="height: 1.6em;">&#10095;</button>
+          </center>
+        </div>
+        <center>
+          <div id="nav-modal-body">
+
+          </div>
+          <button class="selectfilter" onclick="all_comics_pageno-=2; all_comics_nav_page();"
+            style="height: 1.6em;">&#10094;&#10094;</button>
+          <button class="selectfilter" onclick="all_comics_pageno--; all_comics_nav_page();"
+            style="height: 1.6em;">&#10094;</button>
+          <button class="selectfilter" onclick="all_comics_pageno++; all_comics_nav_page();"
+            style="height: 1.6em;">&#10095;</button>
+          <button class="selectfilter" onclick="all_comics_pageno+=2; all_comics_nav_page();"
+            style="height: 1.6em;">&#10095;&#10095;</button>
+        </center>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ---------------modal for each comic complete data ------------------ - -->
+<div class="modal fade" id="comicmodal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+  aria-labelledby="comicmodal" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-fullscreen-lg-down">
+    <div class="modal-content" style="background-color: rgb(38, 38, 40); border-radius: 10px;">
+      <div class="modal-body">
+        <!-- <button type="button" data-bs-dismiss="modal" aria-label="Close"
+          style="position: fixed; top: 0.5%; right: 6%; z-index: 15; background-color: transparent; border: 0;"><img
+            src="assets/icons/close1.png" alt="" width="25px"></button> -->
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col col-md-6 col-lg-4 col-sm-12">
+              <div class="row" id="comicmodaltitle"
+                style="font-size: large; color:antiquewhite; margin-left: 1px; margin-right: 1px; padding-left: 3px; background-color: black; border-radius: 5px;">
+              </div>
+              <div class="row" style="position: relative;"><img id="comicimage" src=""
+                  style="width: 100%; height: auto;">
+                <span style="position: absolute; text-align: right; top: -30px;">
+                  <img id="family-filter1" src="assets/icons/red-family-32.png" alt="" data-toggle="tooltip"
+                    data-placement="bottom" width="auto" height="5%">
+                </span>
+                <span style="position: absolute; bottom: -20px;">
+                  <span> <a id="youtubemodal" target="_blank" href="https://www.youtube.com"><img
+                        src="assets/icons/yout-48.png" alt=""></a> </span>
+                  <span><a id="instagrammodal" target="_blank" href=""><img src="assets/icons/instag-48.png"
+                        alt=""></a></span>
+                  <span><a id="facebookmodal" target="_blank" href=""><img src="assets/icons/fbook-48.png"
+                        alt=""></a></span>
+                </span>
+              </div>
+              <br>
+              <div class="row" id="comicgenre"></div> <br>
+            </div>
+            <div class="col-md-6 col-lg-4 col-sm-12">
+              <div class="row container-fluid"
+                style="display:inline-block; background-color: (87, 87, 87); padding:10px; padding-bottom: 0px; margin-bottom: 4px; color: aliceblue; font-size: large; border:2px solid whitesmoke; border-radius: 10px; ">
+                <div id="comicdata"></div>
+                <!-- <div id="ratingsystem"></div> -->
+              </div>
+              <br>
+              <div class="row">
+                <div id="comicdescription" style="color: white; text-align: left; margin-right: 2px;">
+                </div>
+                <br>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-12 col-sm-12">
+              <div class="row">
+                <h3 style="color:#c5c4c4">Latest Videos</h3>
+              </div>
+              <div id="modalytvideos" class="comicytvideos">
+                <div class="row">
+
+                </div>
+              </div>
+              <br>
+              <div class="row">
+              </div>
+            </div>
+          </div>
+          <!--  -->
+          <div class="row">
+            <form id="comment-form" onsubmit="return false">
+              <img src="assets/icons/avatar02.png" alt="" height="35px">
+              <input id="comment" placeholder="Add a comment"></textarea>
+              <button type="submit" id="commentsubmitbutton">Comment</button>
+            </form>
+            <!-- <form onsubmit="return false">
+              <div class="row">
+                <div class="col col-lg-1 col-md-2 col-sm-2 col-2"><img src="assets/icons/avatar01.png" alt=""
+                    style="border-radius: 50%;"></div>
+
+                <div class="col col-lg-10 col-md-7 col-sm-9 col-6"><input class="commentinput" id="comment" type="text"
+                    placeholder="Add a comment..." required autocomplete="off" value=""></div>
+
+                <div class="col col-lg-1 col-md-2 col-sm-1 col-3 p-2"><button type="submit" class="btn btn-secondary"
+                    id="commentsubmitbutton" onclick=""> Comment</button></div>
+              </div>
+              <!-- <img src="assets/icons/avatar01.png" alt="" style="width: 48px;">
+              <input class="commentinput" id="comment" type="text" placeholder="Add a comment..." required autocomplete="off" style="width: 70%;">
+              <button type="submit" class="btn btn-secondary" id="commentsubmitbutton" onclick="" style="width: 15%; font-size: 1rem;"> Comment</button> -->
+            </form> -->
+
+            <div id="commentsection" style="color: white;">
+
+            </div>
+          </div>
+        </div>
+        <br>
+        <h4 style="color: white;">Similar</h4>
+        <center>
+          <div id="recommendation" class="horizontal-row">
+
+          </div>
+        </center>
+      </div>
+      <div class="modal-footer justify-content-between" style="height: 40px; ">
+
+        <div class="col col-lg-6 col-md-10 col-sm-12 col-12" id="ratingsystem" style="margin-top: -5px; color: white;">
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="press_back()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <!-- <div class="d-none d-md-block">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+            style="position:absolute; right: 10px; bottom: 0px; height: 40px; border-top: 1px solid white; ">Close</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- -- -- -- -- -- -- The Modal for rate card -- -- -- -- -- -- -->
+<div class="modal ratepopup" id="myModal" data-backdrop="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content " style="background-color: rgb(82, 80, 80);">
+      <!-- Modal body -->
+      <center>
+        <div class="modal-body">
+          <!-- <span style="color: yellow; font-size:xx-large; font-weight: bolder;">Rate This: </span> -->
+          <span class="ratetitle" style="color: yellow; font-size: larger; font-weight: bolder;"></span><br>
+          <div id="emojis">
+          </div>
+          <br>
+          <!-- <div class="h-captcha" data-sitekey="a32f8cd4-dafd-4996-b4f7-c245eacf19f9"></div> -->
+          <button type="button" class="btn btn-warning" id="ratebutton" onclick="submitrating()">Rate</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+      </center>
+    </div>
+  </div>
+</div>
+
+<!-- popular comics nav modal -->
+<div class="modal fade" id="popularcomics_navmodal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
+    <div class="modal-content" style="background-color: rgb(26, 26, 26); color: white;">
+      <div class="modal-body">
+        <button type="button" class="close" onclick="press_back()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <center>
+          <h3>Popular Comics</h3>
+          <div id="popularcomics_navmodalbody">
+
+          </div>
+        </center>
+      </div>
+
+      <!-- <div class="modal-footer" style="height: 50px; padding: 0;">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<!-- Modal for specials particular special-->
+<div class="modal fade" id="specialsmodal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content" style="background-color: rgb(38, 38, 40); color: whitesmoke;">
+      <div class="modal-header">
+        <h4 class="modal-title" id="specials-modal-title"></h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="specials-modal-data">
+
+      </div>
+      <div class="modal-footer" id="specials-modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- -- --- --- ---- ---- ----- ----- Specials Modal page -- -- --- --- ---- ---- ----- ----->
+<div class="modal fade" id="specials_navmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
+    <div class="modal-content" style="background-color: rgb(0, 0, 0); color: white;">
+      <div class="modal-body">
+        <button type="button" class="close" onclick="press_back()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <center>
+          <h3>Specials</h3>
+
+          <select class="selectfilter" id="specials_nav_modal_countryfilter"
+            onchange="filtereddata('specials_nav_modal', 'specialsdata')">
+            <option value=1 selected>Country</option>
+            <option value=1>All</option>
+            <option value=2>India</option>
+            <option value=3>USA</option>
+            <option value=4>UK</option>
+          </select>
+
+          <select class="selectfilter" id="specials_nav_modal_ottfilter"
+            onchange="filtereddata('specials_nav_modal', 'specialsdata')">
+            <option value=1 selected>OTT</option>
+            <option value=1>All</option>
+            <option value=2>Prime</option>
+            <option value=3>Netflix</option>
+          </select>
+
+          <button class="selectfilter" onclick="specialspageno--; specials_nav_modal();"
+            style="height: 1.6em;">&#10094;</button>
+          <button class="selectfilter" onclick="specialspageno++; specials_nav_modal();"
+            style="height: 1.6em;">&#10095;</button>
+
+          <div id="specials-modal-body" style="padding-top: 5px;">
+            <div class="card">
+
+            </div>
+          </div>
+        </center>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- --------------- ---------Contact Us Form ---------------- ----------------- -->
+<div class="modal fade" id="contactusmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="background-color: rgb(38, 38, 40); color: white;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Contact Us</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="contactusform">
+          <div><input type="text" name="name" placeholder="Your Name" value="" required></div>
+          <div><input type="text" name="email" id="" placeholder="Email" value=""></div>
+          <div>
+            <input list="Reason" name="reason" id="" placeholder="Reason" value="">
+            <datalist id="Reason">
+              <option value="Suggest New Feature">
+              <option value="Change in existing feature(s)">
+              <option value="Submit a Comic or show">
+              <option value="Report Incorrect information">
+            </datalist>
+            <div><textarea name="message" id="" rows="3" placeholder="Message" value="" required></textarea></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="submitcontactusform()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- modal for search page when pressed enter-->
+<div class="modal fade custom_fade" id="searchpage" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-fullscreen-md-down">
+    <div class="modal-content" style="background-color: rgb(38, 38, 40); color: white;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="searchpagetitle">Search Results</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
+          onclick="press_back()"></button>
+      </div>
+      <div class="modal-body">
+        <h5>Comics</h5>
+        <center>
+          <div id="searchpagecomics">
+
+          </div>
+        </center>
+        <br>
+        <h5>Movies</h5>
+        <center>
+          <div id="searchpagemovies">
+
+          </div>
+        </center>
+        <br>
+        <h5>Specials</h5>
+        <center>
+          <div id="searchpagespecials">
+
+          </div>
+        </center>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- for privacy policy -->
+<div class="modal fade" id="privacypolicymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-fullscreen-lg-down">
+    <div class="modal-content" style="background-color: rgb(38, 38, 40); color: white;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">PRIVACY POLICY</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

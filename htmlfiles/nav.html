@@ -1,0 +1,103 @@
+<style>
+   .vertical-list {
+        overflow-y: scroll;
+        max-height: 400px;
+        padding-top: 4px;
+    }
+
+    #search-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .suggestion-list-row {
+        background-color: rgba(15, 15, 15, 0.836);
+        color: white;
+        font-size: medium;
+        font-weight: 200;
+        border: 0;
+        width: 100%;
+        text-align: left;
+        z-index: 8;
+    }
+
+    .suggestion-list-row:hover {
+        background-color: rgba(39, 39, 39, 0.8);
+    }
+
+    .navdirectbuttons {
+        background-color: transparent;
+        border: 0;
+        /* padding: 2px; */
+        font-size: large;
+        font-weight: 800;
+        margin-top: 2%;
+        color: white;
+    }
+
+    .navdirectbuttons button:hover {
+        background-color: black;
+        border-radius: 4px;
+    }
+</style>
+
+<center>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col col-lg-2 col-md-3 d-none d-md-block">
+                <img src="/assets/icons/comratelogo2.webp" alt="Comrate" width="85%" style="margin-top: 8%;">
+            </div>
+            <div class="col d-sm-none col-sm-2 col-2 ">
+                <img src="/assets/icons/crlogo.webp" alt="" width="50px">
+            </div>
+            <div class="col col-lg-6 col-md-8 col-sm-8 col-8">
+                
+                <input class="form-control me-2" type="search" placeholder="    Search comrate" aria-label="Search"
+                    onkeyup="getsuggestions(event)" onclick="getsuggestions(event)" id="datasearch"
+                    style="margin-top:2%; border-radius: 5px; height: 33px; background-image: url('assets/icons/search-30.webp'); background-repeat: no-repeat;">
+                
+                <div class="col col-lg-6 col-md-7 col-sm-10 col-9 vertical-list" id="search-list"
+                    style="position: absolute; z-index: 2; max-width: 100%;">
+                </div>
+            </div>
+            <div class="col col-lg-4 col-md-1 col-sm-2 col-2" id="navcategories">
+
+            </div>
+        </div>
+</center>
+
+<script>
+    function navbaroptions() {
+        var links =
+            `
+    <button class="navdirectbuttons" type="button" onclick="changehash('#tales/')" class="btn btn-primary">Tales</button>
+    <button class="navdirectbuttons" type="button" onclick="changehash('#movies/')" class="btn btn-primary">Movies</button>
+    <button class="navdirectbuttons" type="button" onclick="changehash('#specials/')" class="btn btn-primary">Specials</button>
+    <button class="navdirectbuttons" type="button" onclick="changehash('#comics/')" class="btn btn-primary">Comics</button>
+  `;
+        document.getElementById("navcategories").innerHTML = "";
+        if ($(window).width() > 992)
+            document.getElementById("navcategories").innerHTML = links;
+
+        else {
+            document.getElementById("navcategories").innerHTML = `
+        <img src="/assets/icons/tales1-50.png" width="40px" onclick="changehash('#tales')">`;
+        }
+    }
+
+    $(document).ready(function () {
+        $(".dropdown").click(function () {
+            $(".dropdown-content").toggle();
+        });
+    });
+
+    function getnavmodal(id = 0) {
+        $("#navmodal").modal("show");
+        document.getElementById("nav-modal-body").innerHTML = "";
+        document.getElementById("nav-modal-title").innerHTML = "";
+        if (id == 0) {
+            document.getElementById("nav-modal-title").innerHTML = "All Comics";
+            all_comics_cards("nav-modal-body");
+        }
+    }
+</script>

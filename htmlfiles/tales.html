@@ -1,0 +1,250 @@
+<style>
+    .video-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 90%;
+        background: transparent;
+        filter: brightness(110%);
+    }
+</style>
+<br>
+<h3 class="sectiontitle" onclick="changehash('tales')">Tales (clips)</h3>
+
+<center>
+    <div class="horizontal-row" id="tales_container">
+
+    </div>
+</center>
+
+
+<!-- Modal for particular tale clip-->
+<div class="modal fade" id="tales_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true" style="height: 100vh;">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content" style="background-color: rgb(0, 0, 0); border-radius: 10px; color: white; ">
+            <div class="modal-body" style="padding: 0;">
+                <center>
+                    <div id="tales_yt_parent" style="">
+                        <div id="tales_yt" style="position: absolute;  left: 50%; transform: translate(-50%, 0);">
+                        </div>
+                        <div id="tales_yt_icons" style="position: relative;">
+                            <img src="assets/icons/like-50.webp" alt="" onclick="tales_liked()">
+                            <img src="assets/icons/shuffle-50.webp" alt="" onclick="tales_sequence()">
+                            <img src="assets/icons/left-arrow-50.webp" alt="" onclick="tales_moveup()">
+                            <img src="assets/icons/right-arrow-50.webp" alt="" onclick="tales_movedown()">
+                        </div>
+                    </div>
+                    <div id="tales_cover" class="video-overlay" onclick="togglevideo()"></div>
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // const tales_list1 = [
+    //     'EfWvZZ1cFDY', '_kwGDmQ9HFc', 'kjiq8n2vw14', 'Sg8CuWoVlYU', 'pZF-vpb4uNE', 'KZwD8Y17yRc', 'oI2OzbJEtT8', 'OnXgX4keLBI', 'iIFlfuzFhhg', 'lpUeNqNX-Os', 'h4TMQpkEg4I', '9l2HqejLpkI', 'OESFRPDzc60', 'tXvmfRtNArU', 'BY4kUnUETZw', 'QkzwmkfdbCw',
+    //     'xhtSiw2yT0M',
+    //     '5NiS9QBSEKM',
+    //     'KaTkPYVzDYc',
+    //     'N2tbNjQKj0E'
+    // ];
+
+    const tales_eng = [
+        "arQBq9oP6T8",
+        "DnSddOyXeIA",
+        'kjiq8n2vw14',
+        '9Tje8k10cBc',
+        "oOYBfKibn3k",
+        "hsYLBfR-AKs",
+        '7h7dECmFDXE',
+        'YqfCRvC8t_Y',
+        'wNTc484PV1c',
+        'VULk2ik2IZo'
+    ]
+
+    const tales_hindi = [
+        "_kwGDmQ9HFc",
+        "A9PRXVcoKlA",
+        "lbzOo_0aTH4",
+        "AURs4E2cbNU",
+        'i8JDpRp-jRk'
+    ]
+
+    var tales_list = tales_hindi.concat(tales_eng).sort(() => Math.random() - 0.5);;
+
+    function tales_card() {
+        document.getElementById("tales_container").innerHTML = `
+            <span class="prev" onclick="move('left', 'tales_container')" style=" margin-top: 7%; left: 1%;">&#10094;</span>
+        <span class="next" onclick="move('notleft', 'tales_container')" style="margin-top: 5%; right:1%;">&#10095;</span>`;
+        for (i = tales_list.length-1; i >=0 && i > tales_list.length - 10; i--) {
+            document.getElementById('tales_container').innerHTML += `
+                <div class="mycard movie_card" style="--bg-img: url('https://i3.wp.com/i.ytimg.com/vi/` + tales_list[i] + `/sddefault.jpg'); height: 10.5em; 
+                    background-position: center; background-repeat: no-repeat; background-size: 215% 100%;" loading="lazy" onclick="vididno=` + i + `; changehash('tales');" loading="lazy">
+                </div>`;
+        }
+    }
+
+    var vididno = tales_list.length - 1;;
+
+    function youtube_api() {
+        // 2. This code loads the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    }
+
+    function onYouTubeIframeAPIReady() {
+        // YouTube API is loaded and ready to use
+        tales_action(vididno)
+    }
+
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
+    var player, new_player, ytpai_loaded = false;
+    function tales_action(vidno) {
+        if (!ytpai_loaded) { youtube_api(); ytpai_loaded = true; return; }
+        if (!player) {
+            // $("#tales_yt_icons img:eq(3)").attr('src', "assets/icons/shuffle-50.png")
+            // $("#tales_yt_icons img:eq(1)").attr('src', "assets/icons/left-arrow-50.png")
+            // $("#tales_yt_icons img:eq(2)").attr('src', "assets/icons/right-arrow-50.png")
+            // $("#tales_yt_icons img:eq(0)").attr('src', "assets/icons/like-60.png")
+            if ($(window).width() < 600) {
+                $('#tales_yt_icons').css({
+                    "top": window.innerHeight - 60,
+                    "right": "0px"
+                })
+                var width = $(window).width().toString();
+                var height = window.innerHeight.toString();
+                player = new YT.Player('tales_yt', {
+                    height: height,
+                    width: width,
+                    videoId: tales_list[vidno],
+                    playerVars: {
+                        'playsinline': 1,
+                        'autoplay': 1,
+                        'controls': 0,
+                        'rel': 0
+                    },
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
+            }
+            else {
+                // $("#tales_yt_icons img:eq(1)").attr('src', "assets/icons/up-arrow-50.png")
+                // $("#tales_yt_icons img:eq(2)").attr('src', "assets/icons/down-arrow-50.png")
+                // $("#tales_yt_icons img:eq(0)").attr('src', "assets/icons/like-60.png")
+                $('#tales_yt_icons').css({
+                    "top": window.innerHeight - 80
+                })
+                console.log('getting new player')
+                $("#tales_yt").css({
+                    "top": "50%",
+                    "transform": "translate(-50% , -50%)"
+                })
+                player = new YT.Player('tales_yt', {
+                    height: '635',
+                    width: '390',
+                    videoId: tales_list[vidno],
+                    playerVars: {
+                        'playsinline': 1,
+                        'autoplay': 1,
+                        'controls': 0,
+                        'rel': 0
+                    },
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
+            }
+        }
+        else player.loadVideoById(tales_list[vididno])
+
+    }
+
+    // 4. The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+        event.target.playVideo();
+    }
+
+    var done = false;
+    function onPlayerStateChange(event) {
+
+        if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+            player.playVideo()
+        }
+
+        if (player.getPlayerState() === YT.PlayerState.ENDED) {
+            if (random) tales_movedown();
+            else player.loadVideoById(tales_list[vididno])
+            color = true;
+            tales_liked();
+        }
+    }
+    function stopVideo() {
+        player.stopVideo();
+    }
+
+    function playVideo() {
+        player.playVideo();
+    }
+
+    function pauseVideo() {
+        player.pauseVideo();
+    }
+
+    function togglevideo() {
+        if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+            pauseVideo();
+        }
+        else {
+            playVideo();
+        }
+    }
+
+    function tales_moveup() {
+        if ((--vididno) < 0) vididno = tales_list.length - 1;
+        player.loadVideoById(tales_list[vididno])
+        color = true;
+        tales_liked();
+    }
+
+    function tales_movedown() {
+        if ((++vididno) >= tales_list.length) vididno = 0;
+        player.loadVideoById(tales_list[vididno])
+        color = true;
+        tales_liked();
+    }
+
+    var color = false;
+    function tales_liked() {
+        if (!color) {
+            $("#tales_yt_icons img:eq(0)").attr('src', "assets/icons/like-colored-50.webp")
+            color = true;
+        }
+        else {
+            color = false;
+            $("#tales_yt_icons img:eq(0)").attr('src', "assets/icons/like-50.webp")
+        }
+    }
+
+    var random = true;
+    function tales_sequence() {
+        if (random) {
+            random = false;
+            $("#tales_yt_icons img:eq(1)").attr('src', "assets/icons/repeat-50.webp")
+        }
+        else {
+            random = true;
+            $("#tales_yt_icons img:eq(1)").attr('src', "assets/icons/shuffle-50.webp")
+        }
+    }
+</script>
